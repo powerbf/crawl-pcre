@@ -4,9 +4,54 @@ ifneq ($(findstring $(MAKEFLAGS),s),s)
 ifndef V
         QUIET_CC       = @echo '   ' CC $@;
         QUIET_AR       = @echo '   ' AR $@;
+        QUIET_INSTALL  = @echo '   ' INSTALL $<;
         export V
 endif
 endif
+
+prefix ?= /usr/local
+libdir := $(prefix)/lib
+includedir := $(prefix)/include
+mandir := $(prefix)/share/man
+man3dir := $(mandir)/man3
+
+MAN3 := \
+	doc/pcre.3 \
+	doc/pcre_compile.3 \
+	doc/pcre_compile2.3 \
+	doc/pcre_config.3 \
+	doc/pcre_copy_named_substring.3 \
+	doc/pcre_copy_substring.3 \
+	doc/pcre_dfa_exec.3 \
+	doc/pcre_exec.3 \
+	doc/pcre_free_substring.3 \
+	doc/pcre_free_substring_list.3 \
+	doc/pcre_fullinfo.3 \
+	doc/pcre_get_named_substring.3 \
+	doc/pcre_get_stringnumber.3 \
+	doc/pcre_get_stringtable_entries.3 \
+	doc/pcre_get_substring.3 \
+	doc/pcre_get_substring_list.3 \
+	doc/pcre_info.3 \
+	doc/pcre_maketables.3 \
+	doc/pcre_refcount.3 \
+	doc/pcre_study.3 \
+	doc/pcre_version.3 \
+	doc/pcreapi.3 \
+	doc/pcrebuild.3 \
+	doc/pcrecallout.3 \
+	doc/pcrecompat.3 \
+	doc/pcrematching.3 \
+	doc/pcrepartial.3 \
+	doc/pcrepattern.3 \
+	doc/pcreperform.3 \
+	doc/pcreposix.3 \
+	doc/pcreprecompile.3 \
+	doc/pcresample.3 \
+	doc/pcrestack.3 \
+	doc/pcresyntax.3
+
+MAN3_INST := $(patsubst doc/%,$(man3dir)/%,$(MAN3))
 
 OBJECTS := \
 	pcre_chartables.o \
@@ -31,7 +76,9 @@ OBJECTS := \
 	pcre_xclass.o
 
 CC ?= gcc
-AR ?= ar rcu
+ifeq ($(AR),ar)
+AR := ar rcu
+endif
 RANLIB := ranlib
 RM ?= rm -f
 
@@ -51,3 +98,20 @@ $(LIBNAME) : $(OBJECTS)
 
 %.o: %.c
 	$(QUIET_CC)$(CC) $(CFLAGS) -o $@ -c $<
+
+$(includedir)/%.h: %.h
+	-@if [ ! -d $(includedir)  ]; then mkdir -p $(includedir); fi
+	$(QUIET_INSTALL)cp $< $@
+	@chmod 0644 $@
+
+$(man3dir)/%.3: doc/%.3
+	-@if [ ! -d $(man3dir)  ]; then mkdir -p $(man3dir); fi
+	$(QUIET_INSTALL)cp $< $@
+	@chmod 0644 $@
+
+$(libdir)/%.a: %.a
+	-@if [ ! -d $(libdir)  ]; then mkdir -p $(libdir); fi
+	$(QUIET_INSTALL)cp $< $@
+	@chmod 0755 $@
+
+install: $(libdir)/$(LIBNAME) $(MAN3_INST)  $(includedir)/pcre.h

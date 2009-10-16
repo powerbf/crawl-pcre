@@ -76,9 +76,7 @@ OBJECTS := \
 	pcre_xclass.o
 
 CC ?= gcc
-ifeq ($(AR),ar)
-AR := ar rcu
-endif
+AR ?= ar
 RANLIB := ranlib
 RM ?= rm -f
 
@@ -89,11 +87,13 @@ LIBNAME := libpcre.a
 
 all: $(LIBNAME)
 
+distclean: clean
+
 clean:
 	$(RM) $(LIBNAME) $(OBJECTS)
 
 $(LIBNAME) : $(OBJECTS)
-	$(QUIET_AR)$(AR) $@ $?
+	$(QUIET_AR)$(AR) rcu $@ $?
 	@$(RANLIB) $@
 
 %.o: %.c

@@ -4,6 +4,7 @@ ifneq ($(findstring $(MAKEFLAGS),s),s)
 ifndef V
         QUIET_CC       = @echo '   ' CC $@;
         QUIET_AR       = @echo '   ' AR $@;
+        QUIET_RANLIB   = @echo '   ' RANLIB $@;
         QUIET_INSTALL  = @echo '   ' INSTALL $<;
         export V
 endif
@@ -77,7 +78,7 @@ OBJECTS := \
 
 CC ?= gcc
 AR ?= ar
-RANLIB := ranlib
+RANLIB ?= ranlib
 RM ?= rm -f
 
 CFLAGS += -I. -DHAVE_CONFIG_H
@@ -94,7 +95,7 @@ clean:
 
 $(LIBNAME) : $(OBJECTS)
 	$(QUIET_AR)$(AR) rcu $@ $?
-	@$(RANLIB) $@
+	$(QUIET_RANLIB)$(RANLIB) $@
 
 %.o: %.c
 	$(QUIET_CC)$(CC) $(CFLAGS) -o $@ -c $<

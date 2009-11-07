@@ -91,13 +91,13 @@ all: $(LIBNAME)
 distclean: clean
 
 clean:
-	$(RM) $(LIBNAME) $(OBJECTS)
+	$(RM) $(LIBNAME) $(OBJECTS) .cflags
 
 $(LIBNAME) : $(OBJECTS)
 	$(QUIET_AR)$(AR) rcu $@ $?
 	$(QUIET_RANLIB)$(RANLIB) $@
 
-%.o: %.c
+%.o: %.c .cflags
 	$(QUIET_CC)$(CC) $(CFLAGS) -o $@ -c $<
 
 $(includedir)/%.h: %.h
@@ -116,3 +116,14 @@ $(libdir)/%.a: %.a
 	@chmod 0755 $@
 
 install: $(libdir)/$(LIBNAME) $(MAN3_INST)  $(includedir)/pcre.h
+
+TRACK_CFLAGS = $(subst ','\'',$(CC) $(CFLAGS))
+
+.cflags: .force-cflags
+	@FLAGS='$(TRACK_CFLAGS)'; \
+    if test x"$$FLAGS" != x"`cat .cflags 2>/dev/null`" ; then \
+        echo "    * rebuilding pcre: new build flags or prefix"; \
+        echo "$$FLAGS" > .cflags; \
+    fi
+
+.PHONY: .force-cflags

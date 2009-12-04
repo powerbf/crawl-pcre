@@ -1,3 +1,20 @@
+<html>
+<head>
+<title>pcredemo specification</title>
+</head>
+<body bgcolor="#FFFFFF" text="#00005A" link="#0066FF" alink="#3399FF" vlink="#2222BB">
+<h1>pcredemo man page</h1>
+<p>
+Return to the <a href="index.html">PCRE index page</a>.
+</p>
+<p>
+This page is part of the PCRE HTML documentation. It was generated automatically
+from the original man page. If there is any nonsense in it, please consult the
+man page, in case the conversion went wrong.
+<br>
+<ul>
+</ul>
+<PRE>
 /*************************************************
 *           PCRE DEMONSTRATION PROGRAM           *
 *************************************************/
@@ -26,9 +43,9 @@ unwanted results. So in this environment, uncomment the following line. */
 
 /* #define PCRE_STATIC */
 
-#include <stdio.h>
-#include <string.h>
-#include <pcre.h>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;pcre.h&gt;
 
 #define OVECCOUNT 30    /* should be a multiple of 3 */
 
@@ -58,7 +75,7 @@ int rc, i;
 **************************************************************************/
 
 find_all = 0;
-for (i = 1; i < argc; i++)
+for (i = 1; i &lt; argc; i++)
   {
   if (strcmp(argv[i], "-g") == 0) find_all = 1;
     else break;
@@ -86,8 +103,8 @@ subject_length = (int)strlen(subject);
 re = pcre_compile(
   pattern,              /* the pattern */
   0,                    /* default options */
-  &error,               /* for error message */
-  &erroffset,           /* for error offset */
+  &amp;error,               /* for error message */
+  &amp;erroffset,           /* for error offset */
   NULL);                /* use default character tables */
 
 /* Compilation failed: print the error message and exit */
@@ -117,7 +134,7 @@ rc = pcre_exec(
 
 /* Matching failed: handle error cases */
 
-if (rc < 0)
+if (rc &lt; 0)
   {
   switch(rc)
     {
@@ -153,7 +170,7 @@ if (rc == 0)
 /* Show substrings stored in the output vector by number. Obviously, in a real
 application you might want to do things other than print them. */
 
-for (i = 0; i < rc; i++)
+for (i = 0; i &lt; rc; i++)
   {
   char *substring_start = subject + ovector[2*i];
   int substring_length = ovector[2*i+1] - ovector[2*i];
@@ -175,9 +192,9 @@ we have to extract the count of named parentheses from the pattern. */
   re,                   /* the compiled pattern */
   NULL,                 /* no extra data - we didn't study the pattern */
   PCRE_INFO_NAMECOUNT,  /* number of named substrings */
-  &namecount);          /* where to put the answer */
+  &amp;namecount);          /* where to put the answer */
 
-if (namecount <= 0) printf("No named substrings\n"); else
+if (namecount &lt;= 0) printf("No named substrings\n"); else
   {
   unsigned char *tabptr;
   printf("Named substrings\n");
@@ -189,21 +206,21 @@ if (namecount <= 0) printf("No named substrings\n"); else
     re,                       /* the compiled pattern */
     NULL,                     /* no extra data - we didn't study the pattern */
     PCRE_INFO_NAMETABLE,      /* address of the table */
-    &name_table);             /* where to put the answer */
+    &amp;name_table);             /* where to put the answer */
 
   (void)pcre_fullinfo(
     re,                       /* the compiled pattern */
     NULL,                     /* no extra data - we didn't study the pattern */
     PCRE_INFO_NAMEENTRYSIZE,  /* size of each entry in the table */
-    &name_entry_size);        /* where to put the answer */
+    &amp;name_entry_size);        /* where to put the answer */
 
   /* Now we can scan the table and, for each entry, print the number, the name,
   and the substring itself. */
 
   tabptr = name_table;
-  for (i = 0; i < namecount; i++)
+  for (i = 0; i &lt; namecount; i++)
     {
-    int n = (tabptr[0] << 8) | tabptr[1];
+    int n = (tabptr[0] &lt;&lt; 8) | tabptr[1];
     printf("(%d) %*s: %.*s\n", n, name_entry_size - 3, tabptr + 2,
       ovector[2*n+1] - ovector[2*n], subject + ovector[2*n]);
     tabptr += name_entry_size;
@@ -283,7 +300,7 @@ for (;;)
 
   /* Other matching errors are not recoverable. */
 
-  if (rc < 0)
+  if (rc &lt; 0)
     {
     printf("Matching error %d\n", rc);
     pcre_free(re);    /* Release memory used for the compiled pattern */
@@ -305,20 +322,20 @@ for (;;)
   /* As before, show substrings stored in the output vector by number, and then
   also any named substrings. */
 
-  for (i = 0; i < rc; i++)
+  for (i = 0; i &lt; rc; i++)
     {
     char *substring_start = subject + ovector[2*i];
     int substring_length = ovector[2*i+1] - ovector[2*i];
     printf("%2d: %.*s\n", i, substring_length, substring_start);
     }
 
-  if (namecount <= 0) printf("No named substrings\n"); else
+  if (namecount &lt;= 0) printf("No named substrings\n"); else
     {
     unsigned char *tabptr = name_table;
     printf("Named substrings\n");
-    for (i = 0; i < namecount; i++)
+    for (i = 0; i &lt; namecount; i++)
       {
-      int n = (tabptr[0] << 8) | tabptr[1];
+      int n = (tabptr[0] &lt;&lt; 8) | tabptr[1];
       printf("(%d) %*s: %.*s\n", n, name_entry_size - 3, tabptr + 2,
         ovector[2*n+1] - ovector[2*n], subject + ovector[2*n]);
       tabptr += name_entry_size;
@@ -332,3 +349,6 @@ return 0;
 }
 
 /* End of pcredemo.c */
+<p>
+Return to the <a href="index.html">PCRE index page</a>.
+</p>

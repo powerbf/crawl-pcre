@@ -94,6 +94,7 @@ clean:
 	$(RM) $(LIBNAME) $(OBJECTS) .cflags
 
 $(LIBNAME) : $(OBJECTS)
+	@$(RM) $@
 	$(QUIET_AR)$(AR) rcu $@ $?
 	$(QUIET_RANLIB)$(RANLIB) $@
 

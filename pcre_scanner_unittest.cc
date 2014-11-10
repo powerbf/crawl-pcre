@@ -37,6 +37,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>      /* for strchr */
 #include <string>
 #include <vector>
 
@@ -148,6 +149,8 @@ static void TestBigComment() {
 //       small stack size
 
 int main(int argc, char** argv) {
+  (void)argc;
+  (void)argv;
   TestScanner();
   TestBigComment();
 

@@ -19,12 +19,14 @@ man3dir := $(mandir)/man3
 MAN3 := \
 	doc/pcre.3 \
 	doc/pcre_compile.3 \
+	doc/pcre_assign_jit_stack.3 \
 	doc/pcre_compile2.3 \
 	doc/pcre_config.3 \
 	doc/pcre_copy_named_substring.3 \
 	doc/pcre_copy_substring.3 \
 	doc/pcre_dfa_exec.3 \
 	doc/pcre_exec.3 \
+	doc/pcre_free_study.3 \
 	doc/pcre_free_substring.3 \
 	doc/pcre_free_substring_list.3 \
 	doc/pcre_fullinfo.3 \
@@ -33,15 +35,24 @@ MAN3 := \
 	doc/pcre_get_stringtable_entries.3 \
 	doc/pcre_get_substring.3 \
 	doc/pcre_get_substring_list.3 \
-	doc/pcre_info.3 \
+	doc/pcre_jit_exec.3 \
+	doc/pcre_jit_stack_alloc.3 \
+	doc/pcre_jit_stack_free.3 \
 	doc/pcre_maketables.3 \
+	doc/pcre_pattern_to_host_byte_order.3 \
 	doc/pcre_refcount.3 \
 	doc/pcre_study.3 \
+	doc/pcre_utf16_to_host_byte_order.3 \
+	doc/pcre_utf32_to_host_byte_order.3 \
 	doc/pcre_version.3 \
 	doc/pcreapi.3 \
 	doc/pcrebuild.3 \
 	doc/pcrecallout.3 \
 	doc/pcrecompat.3 \
+	doc/pcrecpp.3 \
+	doc/pcredemo.3 \
+	doc/pcrejit.3 \
+	doc/pcrelimits.3 \
 	doc/pcrematching.3 \
 	doc/pcrepartial.3 \
 	doc/pcrepattern.3 \
@@ -50,11 +61,13 @@ MAN3 := \
 	doc/pcreprecompile.3 \
 	doc/pcresample.3 \
 	doc/pcrestack.3 \
-	doc/pcresyntax.3
+	doc/pcresyntax.3 \
+	doc/pcreunicode.3
 
 MAN3_INST := $(patsubst doc/%,$(man3dir)/%,$(MAN3))
 
 OBJECTS := \
+	pcre_byte_order.o \
 	pcre_chartables.o \
 	pcre_compile.o \
 	pcre_config.o \
@@ -63,14 +76,14 @@ OBJECTS := \
 	pcre_fullinfo.o \
 	pcre_get.o \
 	pcre_globals.o \
-	pcre_info.o \
+	pcre_jit_compile.o \
 	pcre_maketables.o \
 	pcre_newline.o \
 	pcre_ord2utf8.o \
 	pcre_refcount.o \
+	pcre_string_utils.o \
 	pcre_study.o \
 	pcre_tables.o \
-	pcre_try_flipped.o \
 	pcre_ucd.o \
 	pcre_valid_utf8.o \
 	pcre_version.o \

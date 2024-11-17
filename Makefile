@@ -76,6 +76,11 @@ OBJECTS := \
 	pcre_version.o \
 	pcre_xclass.o
 
+INCLUDES:= pcre.h pcrecpp.h pcrecpparg.h pcre_stringpiece.h
+
+INCLUDES_INST := $(patsubst %,$(includedir)/%,$(INCLUDES))
+
+
 CC ?= gcc
 AR ?= ar
 RANLIB ?= ranlib
@@ -84,21 +89,31 @@ RM ?= rm -f
 CFLAGS += -I. -DHAVE_CONFIG_H
 LDFLAGS :=
 
-LIBNAME := libpcre.a
+MAINLIB := libpcre.a
+CPPLIB := libpcrecpp.a
+LIBNAMES := $(MAINLIB) $(CPPLIB)
 
-all: $(LIBNAME)
+all: $(LIBNAMES)
 
 distclean: clean
 
 clean:
-	$(RM) $(LIBNAME) $(OBJECTS) .cflags
+	$(RM) $(LIBNAMES) $(OBJECTS) .cflags
 
-$(LIBNAME) : $(OBJECTS)
+$(MAINLIB) : $(OBJECTS)
+	@$(RM) $@
+	$(QUIET_AR)$(AR) rcu $@ $?
+	$(QUIET_RANLIB)$(RANLIB) $@
+
+$(CPPLIB) : pcrecpp.o
 	@$(RM) $@
 	$(QUIET_AR)$(AR) rcu $@ $?
 	$(QUIET_RANLIB)$(RANLIB) $@
 
 %.o: %.c .cflags
+	$(QUIET_CC)$(CC) $(CFLAGS) -o $@ -c $<
+
+%.o: %.cc .cflags
 	$(QUIET_CC)$(CC) $(CFLAGS) -o $@ -c $<
 
 $(includedir)/%.h: %.h
@@ -116,7 +131,7 @@ $(libdir)/%.a: %.a
 	$(QUIET_INSTALL)cp $< $@
 	@chmod 0755 $@
 
-install: $(libdir)/$(LIBNAME) $(MAN3_INST)  $(includedir)/pcre.h
+install: $(libdir)/$(MAINLIB) $(libdir)/$(CPPLIB) $(MAN3_INST) $(INCLUDES_INST)
 
 TRACK_CFLAGS = $(subst ','\'',$(CC) $(CFLAGS))
 

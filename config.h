@@ -128,10 +128,13 @@ them both to 0; an emulation function will be used. */
 
 /* Define to 1 if you have `strtoll'. */
 /* #undef HAVE_STRTOLL */
+#define HAVE_STRTOLL 1
 
 /* Define to 1 if you have `strtoq'. */
 #ifndef HAVE_STRTOQ
+#if !defined(WIN32) && !defined(_WIN32)
 #define HAVE_STRTOQ 1
+#endif
 #endif
 
 /* Define to 1 if you have the <sys/stat.h> header file. */

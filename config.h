@@ -312,6 +312,8 @@ them both to 0; an emulation function will be used. */
    macro. That is, PCRE can support *either* EBCDIC code *or* ASCII/UTF-8, but
    not both at once. */
 /* #undef SUPPORT_UTF8 */
+#define SUPPORT_UTF 1
+#define SUPPORT_UTF8 1
 
 /* Version number of package */
 #ifndef VERSION
